@@ -280,7 +280,7 @@ inrange,locked:boolean;
 function collision(mhandler:tmnodo;x,y:integer;var t:integer):boolean;
 //check whether the mouse coordinates collide with the list items
 var
- i,px,px2,py,py2:integer;
+ px,px2,py,py2:integer;
  aux:tmNodo;
  upperbound,b:integer;
 Begin
@@ -323,6 +323,8 @@ Begin
                  Boton(aux^.xwhere-4,aux^.ywhere-4,aux^.xwhere+(length(aux^.nChoice)*8)+2,aux^.ywhere+10,1,aux^.mSBackcolor,false,0);
                esc(aux^.xwhere,aux^.ywhere,aux^.nChoice,aux^.mSForecolor);
                s:=0;
+               x:=0;
+               y:=0;
                  Repeat
                     {mouse operations}
                     showmouse;
@@ -407,7 +409,7 @@ inrange,locked:boolean;
 function collision(mhandler:tmnodo;x,y:integer;var t:integer):boolean;
 //check whether the mouse coordinates collide with the list items
 var
- i,px,px2,py,py2:integer;
+ px,px2,py,py2:integer;
  aux:tmNodo;
  upperbound,b:integer;
 Begin
@@ -449,7 +451,9 @@ Begin
                esc(aux^.xwhere,aux^.ywhere,aux^.nChoice,aux^.mSForecolor);
                s:=0;
                inrange:=false;
-                Repeat
+               x:=0;
+               y:=0;
+               Repeat
                     {mouse operations}
                     showmouse;
                     lastx:=x;
@@ -494,8 +498,8 @@ Begin
 
 Procedure gotoP(var mHandler:tmNodo; po : integer);
 {go to selected item}
-var aux:tmNodo;
-    upperbound,b:integer;
+var aux:tmnodo;
+upperbound,b:integer;
 Begin
      aux:=mLast;
      mHandler:=aux;
@@ -520,7 +524,6 @@ Begin
   End;
 End;
 Procedure Update(var mHandler: tmNodo;nItem:string;num:integer);
-   var aux:tmnodo;
 Begin
 
     mHandler:=mCurrent;
@@ -598,7 +601,7 @@ inrange,locked:boolean;
 function collision(var mhandler:tmnodo;x,y:integer;var t:integer):boolean;
 //check whether the mouse coordinates collide with the list items
 var
- i,px,px2,py,py2:integer;
+ px,px2,py,py2:integer;
  aux:tmNodo;
  upperbound,b:integer;
 Begin
@@ -634,6 +637,8 @@ Begin
    aux:=mfirst;
  //  gotoP(aux,mCurrent^.nlistcount);
    inrange:=false;
+   x:=0;
+   y:=0;
    Repeat
         {mouse operations}
         showmouse;
