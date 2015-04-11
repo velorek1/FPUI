@@ -2,14 +2,16 @@
 UNIT HEX2BIN
 ============
 Coded by Velorek.
-Last modified: 17/4/2014
+Last modified: 10/4/2015
 *)
 Unit Hex2Bin;
 INTERFACE
+Uses gfxn,gfwin,ptcgraph;
+
 Const
      TablaHex:array[1..16] of char = ('0','1','2','3','4','5',
-                                     '6','7','8','9','A','B',
-                                     'C','D','E','F');
+                                     '6','7','8','9','A','B','C','D','E','F');
+var win1:tmwin;
 Function Potencia(num,pp:longint):longint;
 Function Dec2Bin(C:longint):string;
 Function Bin2Dec(nbin:string):longint;
@@ -52,11 +54,11 @@ End;
 Function Potencia(num,pp:longint):longint;
 {Da la potencia de un n£mero dado}
 Var i:longint;
-result:longint;
+resulta:longint;
 Begin
-     result:=1;
-     For i:=1 to pp do result:=result*num;
-potencia:=result;
+     resulta:=1;
+     For i:=1 to pp do resulta:=resulta*num;
+     potencia:=resulta;
 End;
 Function Dec2Bin(C:longint):string;
 {Convierte un n£mero decimal en un n£mero binario}
@@ -98,7 +100,7 @@ Function Bin2Dec(nbin:string):longint;
 Var
 i,pot:longint;
 cad:string;
-code,temp,suma,resto:integer;
+code,temp,suma,resto:longint;
 Begin
      cad:=nbin;
      i:=1;
@@ -118,6 +120,7 @@ Begin
                   temp:=0;
                   resto:=0;
                   pot:=0;
+
              End;
           i:=i+1;
      End;
@@ -201,6 +204,14 @@ Begin
           'D':TablaBin:='1101';
           'E':TablaBin:='1110';
           'F':TablaBin:='1111';
+          'a':TablaBin:='1010';
+          'b':TablaBin:='1011';
+          'c':TablaBin:='1100';
+          'd':TablaBin:='1101';
+          'e':TablaBin:='1110';
+          'f':TablaBin:='1111';
+          else
+          TablaBin:='0000';
      end;
 End;
 Function Hex2Dec(sHex:String):longint;
