@@ -89,7 +89,7 @@ var
   gd,gm: integer;
 begin
   Fullscreengraph:=Fullscreen;
-  gd := detect;
+  gd := detect; {preferred,1024x768x32}
   initgraph(gd, gm, '');
 end;
 Procedure Fin;
@@ -280,7 +280,6 @@ Textbox
         actley: activated or false
 *)
 var
-  b:integer;
   cad,cad2:string;
   lon,oldx,i:integer;
   tecla:char;
@@ -356,7 +355,6 @@ Textbox
         actley: activated or false
 *)
 var
-  b:integer;
   cad,cad2:string;
   lon,oldx,i:integer;
   tecla:char;
