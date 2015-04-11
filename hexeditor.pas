@@ -1,4 +1,4 @@
-Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,dos;
+Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils;
 const
         aboutmsg = 'Hex Editor v0.1' + chr(10) + '2015. = Coded by Velorek =';
         textwin = 'Are you sure that you want to quit'+chr(10) + 'Hex Editor?';
@@ -17,17 +17,13 @@ var
 menu1,menu2:tmNodo;
 menu1data:string;
 texto:array[0..360] of string[2];
-lines:array[0..21] of string[16];
-filech: PathStr;
-loop:boolean;
 {hex}
 x,y,state,lastx,lasty:longint;
 xs,ys,states:string;
 car:char;
 menux:array[1..3] of tmwin;
-win1:tmwin;
 menops:array[1..3] of tmnodo;
-pressed,close,fullsc,ver:boolean;
+pressed,fullsc,ver:boolean;
 procedure credits;
 begin
   if menux[1]<>nil then gclosewin(menux[1]);
@@ -54,7 +50,6 @@ begin
   halt;
 end;
 procedure display;
-var posx,posy:integer;
 begin
     inicia(fullsc);
     fondo($2b98);
@@ -78,8 +73,6 @@ begin
     line(186,1,186,23);
     line(890,1,890,23);
     esc(190,8,' Hex Editor v0.01',$0000);
-    posy:=80;
-    posx:=40;
     line(178,51,178,getmaxy-78);
     line(750,51,750,getmaxy-78);
     rectangl(0,getmaxy-25,getmaxx,getmaxy,$a7,1,$a7);
@@ -139,31 +132,29 @@ begin
     rectangl(900,4,1300,17,whitec,1,whitec);
 end;
 procedure addr;
-var i,current,posy,posx,k,J,p:integer;
+var i,current,posy,posx:integer;
 rem:string;
 begin
      current:=1;
-     J:=7; {CONST NUMBER OF BYTES ADDRESS}
      posx:=35;
      posy:=70;
      i:=0;
      repeat
          rem:=dec2hex(current);
-         k:=length(rem);
          esc(posx,posy,'Offset: ',dgreyc);
          esc(posx+10*8,posy,rem,dbluec);
          posy:=posy+30;
          current:=current+19;
       i:=i+1;
-     until i=10;
+     until i=20;
 end;
 
 procedure loadfile;
 var
 F:file of byte;
 Cp:Byte;
-i,j,calculate,inca:longint;
-Count,Co2,lineco,y,linx:integer;
+i:longint;
+Count:integer;
 filesi:string;
 Begin
   for i:=1 to 360 do texto[i]:='00';
@@ -171,8 +162,7 @@ Begin
     If paramstr(1) <> '' then
     Begin
          {Check if file exists}
-         filech:=FSearch(Paramstr(1),GetEnv('PATH'));
-         if filech = '' then
+         if not fileexists(paramstr(1)) then
          Begin
            alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -','Parameter: ' + paramstr(1) +chr(10)+'Error: File not found.');
            exit;
@@ -180,11 +170,10 @@ Begin
     end
     else
      exit; //if no file given
+    //close(f);
     assign(f,paramstr(1));
     reset(f);
     count:=0;
-    co2:=0;
-    lineco:=0;
     i:=filesize(f);
     str(i,filesi);
     boton(24,getmaxy-96,getmaxx-26,getmaxy-74,1,$44da,false,0);
@@ -197,6 +186,7 @@ Begin
       count:=count+1;
       if count = 360 then break;
     end;
+    close(f);
     loadpage;
     loadtext;
 end;
@@ -214,16 +204,16 @@ begin
       end;
     2: begin
          CMenu(menops[2],lgreyc,blackc,dredc,whitec,true);
-         Add_item(menops[2],'Undo       CTRL+U',70,30);
-         Add_item(menops[2],'Copy       CTRL+C',70,50);
-         Add_item(menops[2],'Paste      CTRL+V',70,70);
-         Add_item(menops[2],'Fullscreen CTRL+F',70,100);
+         Add_item(menops[2],'Undo       CTRL+U',73,30);
+         Add_item(menops[2],'Copy       CTRL+C',73,50);
+         Add_item(menops[2],'Paste      CTRL+V',73,70);
+         Add_item(menops[2],'Fullscreen CTRL+F',73,100);
        end;
     3: begin
          CMenu(menops[3],lgreyc,blackc,dredc,whitec,true);
-         Add_item(menops[3],'Help           F1',130,30);
-         Add_item(menops[3],'Calculator     F7',130,50);
-         Add_item(menops[3],'About            ',130,80);
+         Add_item(menops[3],'Help          F1',133,30);
+         Add_item(menops[3],'Calculator    F7',133,50);
+         Add_item(menops[3],'About           ',133,80);
        end;
  end;
 end;
@@ -245,8 +235,6 @@ begin
 end;
 procedure hovermenus(x,y,state:integer);
 //deal with mouse menus
-var ch:char;
-aux:tmwin;
 begin
    if (mrange(1,155,1024,768)) or (mrange(321,1,1024,768)) then begin
     if menux[1]<>nil then gclosewin(menux[1]);
@@ -304,7 +292,7 @@ begin
       escc(5,2,60,22,'File',blackc);
       escc(3,1,58,21,'File',whitec);
       gwindow(menux[1],5,22,160,140,lgreyc);
-      linex(7,110,159,110);
+      linex(6,110,159,110);
       loadmenus(1);
       start_vmenu_mouse(menops[1],5,22,160,150);
     end;
@@ -325,10 +313,10 @@ begin
       boton(65,2,120,22,1,dgreyc,false,1);
       escc(65,2,120,22,'Edit',blackc);
       escc(63,1,118,21,'Edit',whitec);
-      gwindow(menux[2],62,22,215,120,lgreyc);
-      linex(63,90,214,90);
+      gwindow(menux[2],65,22,215,120,lgreyc);
+      linex(66,90,214,90);
       loadmenus(2);
-      start_vmenu_mouse(menops[2],62,22,215,120);
+      start_vmenu_mouse(menops[2],65,22,215,120);
     end;
     pressed:=true;
     end;
@@ -347,10 +335,10 @@ begin
       boton(125,2,180,22,1,dgreyc,false,1);
       escc(125,2,180,22,'Help',blackc);
       escc(123,1,178,21,'Help',whitec);
-      gwindow(menux[3],122,22,270,100,lgreyc);
-      linex(123,70,269,70);
+      gwindow(menux[3],125,22,270,100,lgreyc);
+      linex(126,70,269,70);
       loadmenus(3);
-      start_vmenu_mouse(menops[3],122,22,270,100);
+      start_vmenu_mouse(menops[3],125,22,270,100);
     end;
       pressed:=true;
     end;
@@ -381,7 +369,7 @@ begin
                         fullsc:=false;
                         inicia(fullsc);
                         display;
-                        //loadfile;
+                        loadfile;
                      end;
            end;
          end;
@@ -407,6 +395,8 @@ Begin
     ver:=false;
     pressed:=false;
     loadfile;
+    x:=0;
+    y:=0;
     repeat
     //main loop
       lastx:=x;
