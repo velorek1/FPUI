@@ -85,7 +85,7 @@ Procedure alertw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFo
 const
         trail_max = 2; // number of windows to create a trail when the window is moved
 var ch:char;
-xmid,ymid,mx,my,state,xsize,ysize:longint;
+xmid,mx,my,state,xsize,ysize:longint;
 oldmx,oldmy:longint; //keep track of old mouse values
 trail:array[0..trail_max] of tmwin;
 wincount,i:integer;
@@ -204,9 +204,11 @@ begin
             end;
             wincount:=wincount+1;
         end;
+
       until (state<>1); //until left button is released
     //window title is unpressed again
     //we delete the trail and show the main window a again
+    if (mx=oldmx) and (my=oldmy) and (wincount=0) and (winid<>nil) then gclosewin(winid); //close main window to create trail
     wincount:=wincount-1;
     for i:=wincount downto 0 do gclosewin(trail[i]);
     gwindow(winid,x1,y1,x2,y2,wbackc);
@@ -242,7 +244,7 @@ Function yesnow(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFon
 const
         trail_max = 2; // number of windows to create a trail when the window is moved
 var ch:char;
-xmid,ymid,mx,my,state,xsize,ysize:longint;
+mx,my,state,xsize,ysize:longint;
 oldmx,oldmy:longint; //keep track of old mouse values
 trail:array[0..trail_max] of tmwin;
 wincount,i:integer;
@@ -366,6 +368,7 @@ begin
       until (state<>1); //until left button is released
     //window title is unpressed again
     //we delete the trail and show the main window a again
+    if (mx=oldmx) and (my=oldmy) and (wincount=0) and (winid<>nil) then gclosewin(winid); //close main window to create trail
     wincount:=wincount-1;
     for i:=wincount downto 0 do gclosewin(trail[i]);
     gwindow(winid,x1,y1,x2,y2,wbackc);
