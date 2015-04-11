@@ -237,3 +237,4 @@ Begin
    until car=#27; //ESC key press
     closegraph;
 End.
+
