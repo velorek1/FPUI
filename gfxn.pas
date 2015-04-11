@@ -1,8 +1,7 @@
 (*
 -------------------------------------------
-        A Freepascal Graphic Unit Tools v1.0
-        2015
-        Coded by:Velorek
+        A Freepascal Graphic Unit v1.0
+        Coded by:Freyr
 -------------------------------------------
 
  Fill styles: (tipo : fillstyles)
@@ -297,12 +296,13 @@ begin
   else
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,0);
 
+if actley=true then begin
+//when textbox is activated
 
     ESC(X1+lon+1,Y2,'³',colefore); //cursor
 
     cad:= ''; //initialises variable
     oldx:=x1+lon+2;
-
     repeat
      {Textbox input loop}
 
@@ -311,7 +311,7 @@ begin
        if (tecla>chr(31)) and (tecla<chr(126)) then begin  //range of allowed keys
           if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
           //ignore arrow keys
-            if (length(cad)<=tecl) and (oldx<x2+lon-8) then begin
+            if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
              //boundaries
               cad:=cad+tecla; //
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
@@ -340,7 +340,9 @@ begin
        end;
     until (tecla=#13) or (tecla=#27);
     rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-    yo:=cad; //saves string
+    if tecla=#13 then yo:=cad; //saves string if enter key was pressed
+    tecla:=chr(0); //clear key buffer
+end;
 end;
 procedure gnumbox(x1,y2,x2:integer;var yo:string;caden:string;colfondo,colefore,collabel,tecl:word;actley:boolean);
 (*
@@ -370,9 +372,14 @@ begin
   else
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,0);
 
+if actley=true then begin
+//when textbox is activated
 
     ESC(X1+lon+1,Y2,'³',colefore); //cursor
 
+//    if yo <> '' then
+//        cad:=yo;
+//    else
     cad:= ''; //initialises variable
     oldx:=x1+lon+2;
 
@@ -384,7 +391,7 @@ begin
        if (tecla>chr(47)) and (tecla<chr(58)) then begin  //range of allowed keys
           if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
           //ignore arrow keys
-            if (length(cad)<=tecl) and (oldx<x2+lon-8) then begin
+            if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
              //boundaries
               cad:=cad+tecla; //
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
@@ -413,7 +420,9 @@ begin
        end;
     until (tecla=#13) or (tecla=#27);
     rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-    yo:=cad; //saves string
+    if tecla=#13 then yo:=cad; //saves string if enter key was pressed
+    tecla:=chr(0); //clear key buffer
+end;
 end;
 
 procedure linex(tra1,ra1,tra2,ra2:integer);
