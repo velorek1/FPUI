@@ -1,6 +1,6 @@
-Program colorpicker;                           
+Program colorpicker;
 (* TrueColor COLOR PICKER *)
-Uses gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin;
+Uses gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin;
 
 type
           cell = record
@@ -12,13 +12,15 @@ type
           end;
 
 var
-  t,p:integer;
+  t,p,globald:integer;
   x,y,state,lastx,lasty:longint;
   xs,ys,states:string; {String equivalents of values}
   byte_cell:array[1..196] of cell; // palette array
   byte_cell2:array[1..188] of cell; // shades array
   car:char; //keyboard input handler
   shades:boolean;
+  win1:tmwin; //window handler
+  inputs,inputs2:string;
 function collision(x,y:integer;var t:integer):boolean;
 //check whether the mouse coordinates collide with the color pallette
 var
@@ -103,10 +105,11 @@ Begin
                 //code:=dec2hex(ram);
                 str(ram,code);
         end;
-        boton(posx,posy,posx+20,posy+20,1,ram,true,0); // draw buttons
+        boton(posx,posy,posx+20,posy+20,1,ram,true,1); // draw buttons
         posy:=posy+20;
         if posy > 490 then begin posy:=430; posx:=posx+20; end;
-        ram:=ram+1; //difference between colors
+       if ram<65535 then ram:=ram+globald; //difference between colors
+       if ram>=65535 then ram:=65535;
     end;
     shades:=true;
 End;
@@ -128,13 +131,17 @@ begin
    // Add_item(men,'hello',posx,posy);
     esc(40,60,'Color palette: ',blackc);
     linex(30,370,getmaxx-30,370);
-    rectangl(650,80,900,360,blackc,1,dgreyc);
+    rectangl(650,80,950,360,blackc,1,dgreyc);
     boton(410,320,570,360,1,tilec,true,1); //generate button
     esc(425,335,'Generate palette',whitec);
     esc(650,60,'Color area:',blackc);
     esc(40,400,'Shades of selected color:',blackc);
-    boton(900,650,980,680,1,dredc,true,0); //exit button
+    boton(900,650,980,680,1,dbluec,true,0); //exit button
     esc(926,661,'EXIT',whitec);
+    rectangl(45,610,310,680,blackc,1,blackc);
+    rectangl(35,600,300,670,blackc,1,lgreyc);
+    gTextbox(40,620,120,inputs,'Color code (Hex): ',tilec,blackc,blackc,4,false);
+    gnumbox(40,640,80,inputs2,'Shades rate:      ',tilec,blackc,blackc,2,false);
 end;
 
 Begin
@@ -143,6 +150,7 @@ Begin
   shades:=false;
   x:=0;
   y:=0;
+  globald:=1;
   repeat
     {main loop}
       lastx:=x;     //last mousex position
@@ -159,7 +167,7 @@ Begin
         gen_shades(byte_cell[t].num);
       end;
       if (collision(x,y,t)) and (state=4) then begin
-      {When you press one of the cells, generate shades; right button}
+      {When you press one of the cells, change color of the label; right button}
         boton(byte_cell[t].px,byte_cell[t].py,byte_cell[t].px+20,byte_cell[t].py+20,1,byte_cell[t].num,false,3);
         delay(100);
         boton(byte_cell[t].px,byte_cell[t].py,byte_cell[t].px+20,byte_cell[t].py+20,1,byte_cell[t].num,true,3);
@@ -176,17 +184,34 @@ Begin
          esc(425,335,'Generate palette',whitec);
          generate;
       end;
-    if (x>=900) and (x<=980) and (y>=650) and (y<=680) and (state=1) then begin
+      if (x>=40) and (x<=267) and (y>=620) and (y<=640) and (state=1) then begin
+      //textbox1
+        gTextbox(40,620,120,inputs,'Color code (Hex): ',tilec,blackc,blackc,4,true);
+        if inputs<>'' then gen_shades(hex2dec(inputs));
+      end;
+      if (x>=40) and (x<=223) and (y>=640) and (y<=660) and (state=1) then begin
+      //textbox2
+      //inputs:='';
+        gnumbox(40,640,80,inputs2,'Shades rate:      ',tilec,blackc,blackc,2,true);
+        val(inputs2,globald);
+      end;
+
+      if (x>=900) and (x<=980) and (y>=650) and (y<=680) and (state=1) then begin
         //exit button
-        boton(900,650,980,680,1,dredc,false,0); //exit button
+        boton(900,650,980,680,1,dbluec,false,0); //exit button
         esc(926,661,'EXIT',whitec);
         delay(100);
-        boton(900,650,980,680,1,dredc,true,0); //exit button
+        boton(900,650,980,680,1,dbluec,true,0); //exit button
         esc(926,661,'EXIT',whitec);
         delay(100);
         closegraph;
         exit;
     end;
+      if (collision2(x,y,p)) and (state=1) then begin
+        //when you press the shades show alertbox
+        alertw(win1,329,201,650,351,dgreyc,lgreyc,tilec,blackc,blackc,'- Color Information -','> Hex Code: '+ dec2hex(byte_cell2[p].num));
+      end;
+
       if (x<>lastx) or (y<>lasty) then begin
         {Detect whether there is mouse movement}
         if collision(x,y,t)=true then begin
@@ -194,16 +219,18 @@ Begin
            rectangl(650,80,950,360,blackc,1,byte_cell[t].num);
            esc(670,90,'Code: ' + byte_cell[t].code+ ':'+dec2hex(byte_cell[t].num),blackc);
         end
-       else
+        else
            rectangl(650,80,950,360,blackc,1,dgreyc);
-       if shades then
+
+      if shades then
          {When shades are activated}
-          if collision2(x,y,p)=true then begin
+        getmousestate(x,y,state);
+        if collision2(x,y,p)=true then begin
            {Change color of rectangle when hovering}
            rectangl(650,80,950,360,blackc,1,byte_cell2[p].num);
            esc(670,90,'Code: ' + byte_cell2[p].code+ ':'+dec2hex(byte_cell2[p].num),blackc);
           end;
-        rectangl(820,4,1022,17,whitec,1,whitec); //clear mouse coordinates  when mouse moves
+          rectangl(820,4,1022,17,whitec,1,whitec); //clear mouse coordinates  when mouse moves
        end;
        esc(820,8,'MOUSE X:' + xs + ' ' + ' Y:'+ys,dredc);
       if keypressed then car:=readkey;
