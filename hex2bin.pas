@@ -2,7 +2,7 @@
 UNIT HEX2BIN
 ============
 Coded by Velorek.
-Last modified: 10/4/2015
+Last modified: 17/4/2014
 *)
 Unit Hex2Bin;
 INTERFACE
@@ -25,18 +25,17 @@ Function Hex(sbin:string):char;
 Var
 i,pot:longint;
 cad:string;
-code,temp,suma,resto:integer;
+temp,suma,resto:integer;
 Begin
      cad:=sbin;
      i:=1;
      suma:=0;
      temp:=0;
-     code:=0;
      resto:=0;
      pot:=0;
      while i<= length(cad) do
      Begin
-          Val(Cad[i],temp,code);
+          Val(Cad[i],temp);
           if temp=1 then
              Begin
                   Resto:=length(cad) - (i);
@@ -63,7 +62,7 @@ End;
 Function Dec2Bin(C:longint):string;
 {Convierte un n£mero decimal en un n£mero binario}
 Var
-i,j,r1,r2,resto,divisor,dividendo:longint;
+i,j,r1,r2,dividendo:longint;
 ret,almacena,sub:string;
 {Base 2}
 Begin
@@ -100,18 +99,17 @@ Function Bin2Dec(nbin:string):longint;
 Var
 i,pot:longint;
 cad:string;
-code,temp,suma,resto:longint;
+temp,suma,resto:longint;
 Begin
      cad:=nbin;
      i:=1;
      suma:=0;
      temp:=0;
-     code:=0;
      resto:=0;
      pot:=0;
      while i<= length(cad) do
      Begin
-          Val(Cad[i],temp,code);
+          Val(Cad[i],temp);
           if temp=1 then
              Begin
                   Resto:=length(cad) - (i);
@@ -131,13 +129,11 @@ Function Dec2Hex(C:longint):string;
 {0 a 255}
 Var
 globalhex,Binario:String;
-i,j,k,d1,d2,r,q:longint;
-temp1,temp2,temp3:string;
+i,j,k,r,q:longint;
+temp1,temp2:string;
 Begin
 
      Binario:=Dec2Bin(c);
-     d1:=0;
-     d2:=0;
      temp1:='';
      temp2:='';
      globalhex:='';
