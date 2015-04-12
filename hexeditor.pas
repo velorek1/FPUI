@@ -2,16 +2,7 @@ Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils;
 const
         aboutmsg = 'Hex Editor v0.1' + chr(10) + '2015. = Coded by Velorek =';
         textwin = 'Are you sure that you want to quit'+chr(10) + 'Hex Editor?';
-
-type
-          cell = record
-          px:integer;
-          py:integer;
-          code:string;
-          size:integer;
-          num:longint;
-          end;
-
+        
 var
 {file}
 menu1,menu2:tmNodo;
