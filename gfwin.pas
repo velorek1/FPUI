@@ -390,7 +390,7 @@ begin
 End;
 Procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:word;title,text:string;var itext:string;caption:string;ilength:integer);
 {Alert window}
-var ch:char;
+var 
 i:integer;
 posx,posy:longint;
 begin
