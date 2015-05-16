@@ -1,22 +1,28 @@
 Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils;
 const
+{messages}
         aboutmsg = 'Hex Editor v0.1' + chr(10) + '2015. = Coded by Velorek =';
         textwin = 'Are you sure that you want to quit'+chr(10) + 'Hex Editor?';
-        
+        mes = 'Write path to file below.';
 var
 {file}
 menu1,menu2:tmNodo;
 menu1data:string;
 texto:array[0..360] of string[2];
 {hex}
+intexto:string;
+fileop:string;  {global file to be opened}
 x,y,state,lastx,lasty:longint;
 xs,ys,states:string;
 car:char;
 menux:array[1..3] of tmwin;
 menops:array[1..3] of tmnodo;
 pressed,fullsc,ver:boolean;
+
 procedure credits;
+{Exit screen}
 begin
+  {Dispose memory}
   if menux[1]<>nil then gclosewin(menux[1]);
   if menux[2]<>nil then gclosewin(menux[2]);
   if menux[3]<>nil then gclosewin(menux[3]);
@@ -40,7 +46,9 @@ begin
   Writeln('');
   halt;
 end;
+
 procedure display;
+{design layout}
 begin
     inicia(fullsc);
     fondo($2b98);
@@ -68,9 +76,10 @@ begin
     line(750,51,750,getmaxy-78);
     rectangl(0,getmaxy-25,getmaxx,getmaxy,$a7,1,$a7);
     esc(870,752,chr(196) + ' Coded by Velorek',lgreyc);
-
 end;
+
 procedure loadpage;
+{Load hexadecimal values to menu}
 var i,posx,posy:integer;
 begin
      posx:=200;
@@ -93,7 +102,9 @@ begin
 
     rectangl(900,4,1300,17,whitec,1,whitec);
 end;
+
 procedure loadtext;
+{Load ascii values to menu}
 var i,posx,posy:integer;
 byt:integer;
 prin:char;
@@ -122,7 +133,9 @@ begin
   if (kglobal=#1) or (kglobal=#13) then alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'Hex Info','Parameter: ' + menu2^.nchoice);
     rectangl(900,4,1300,17,whitec,1,whitec);
 end;
+
 procedure addr;
+{Deal with offset address}
 var i,current,posy,posx:integer;
 rem:string;
 begin
@@ -140,7 +153,8 @@ begin
      until i=20;
 end;
 
-procedure loadfile;
+procedure loadfile(fil:string);
+{Open file to display}
 var
 F:file of byte;
 Cp:Byte;
@@ -150,19 +164,18 @@ filesi:string;
 Begin
   for i:=1 to 360 do texto[i]:='00';
 
-    If paramstr(1) <> '' then
+    If fil <> '' then
     Begin
          {Check if file exists}
-         if not fileexists(paramstr(1)) then
+         if not fileexists(fil) then
          Begin
-           alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -','Parameter: ' + paramstr(1) +chr(10)+'Error: File not found.');
+           alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -','Parameter: ' + fil +chr(10)+'Error: File not found.');
            exit;
          end;
     end
     else
-     exit; //if no file given
-    //close(f);
-    assign(f,paramstr(1));
+      exit; {if no file is given}
+    assign(f,fil);
     reset(f);
     count:=0;
     i:=filesize(f);
@@ -183,6 +196,7 @@ Begin
 end;
 
 procedure loadmenus(men:integer);
+{load menus to memory}
 begin
  Case men of
     1: begin
@@ -208,6 +222,7 @@ begin
        end;
  end;
 end;
+
 procedure drawmenus;
 begin
   rectangl(1,1,185,23,$2b98,11,blackc);
@@ -224,8 +239,9 @@ begin
   if menux[2]<>nil then gclosewin(menux[2]);
   if menux[3]<>nil then gclosewin(menux[3]);
 end;
+
 procedure hovermenus(x,y,state:integer);
-//deal with mouse menus
+{deal with mouse menus}
 begin
    if (mrange(1,155,1024,768)) or (mrange(321,1,1024,768)) then begin
     if menux[1]<>nil then gclosewin(menux[1]);
@@ -235,9 +251,9 @@ begin
    end;
 
    if not pressed then begin
-    //if mouse position is not on the menus
+    {if mouse position is not on the menus}
     drawmenus;
-    //hovering
+    {hovering}
     if mrange(5,2,60,22) then begin
       boton(5,2,60,22,1,dgreyc,true,1);
       escc(5,2,60,22,'File',blackc);
@@ -255,14 +271,25 @@ begin
     end;
   end;
 end;
+
+procedure opendialog;
+{Open file dialog}
+begin
+ inputw(win1,309,201,675,351,dgreyc,lgreyc2,$2b98,whitec,blackc,'Open Dialog',mes,intexto,'File:',30);
+ if intexto<>'' then begin
+    fileop:=intexto;
+   loadfile(fileop);
+ end;
+end;
+
 procedure checkmenus(x,y,state:integer);
 var
 ch:char;
 begin
-    //pressing
+    {pressing}
     if keypressed then ch:=readkey;
     if ch=#27 then begin
-    //if you press escape
+    {if you press escape}
       pressed:=false;
       ch:=#0;
       drawmenus;
@@ -333,9 +360,11 @@ begin
     end;
       pressed:=true;
     end;
+
 {menu options}
      if mrange(5,22,160,150) and (pressed) and (menux[1]<>nil) then begin
-       start_vmenu_mouse(menops[1],5,22,160,140);
+      {File}
+      start_vmenu_mouse(menops[1],5,22,160,140);
        if (kglobal=#1) or (kglobal=#27) or (kglobal =#13) then begin
          gclosewin(menux[1]);
          drawmenus;
@@ -343,10 +372,14 @@ begin
            case menops[1]^.nListcount of
                   5: credits;
            end;
+           case menops[1]^.nListcount of
+                  2: opendialog;
+           end;
          end;
        end;
      end;
      if mrange(62,22,215,120) and (pressed) and (menux[2]<>nil) then begin
+      {Edit}
       start_vmenu_mouse(menops[2],62,22,215,120);
        if (kglobal=#1) or (kglobal=#27) or (kglobal =#13) then begin
          gclosewin(menux[2]);
@@ -360,13 +393,14 @@ begin
                         fullsc:=false;
                         inicia(fullsc);
                         display;
-                        loadfile;
+                        loadfile(fileop);
                      end;
            end;
          end;
        end;
      end;
-     if mrange(122,22,270,100) and (pressed) and (menux[3]<>nil) then begin
+     if mrange(122,22,270,100) and (pressed) and (menux[1]<>nil) then begin
+     {Help}
        start_vmenu_mouse(menops[3],122,22,270,100);
        if (kglobal=#1) or (kglobal=#27) or (kglobal =#13) then begin
          gclosewin(menux[3]);
@@ -378,6 +412,7 @@ begin
          end;
        end;
      end;
+
 end;
 
 Begin
@@ -385,11 +420,12 @@ Begin
     display;
     ver:=false;
     pressed:=false;
-    loadfile;
+    if paramstr(1)<>'' then fileop:=paramstr(1);
+    loadfile(fileop);
     x:=0;
     y:=0;
     repeat
-    //main loop
+    {main loop}
       lastx:=x;
       lasty:=y;
       getmousestate(x,y,state);
@@ -404,10 +440,9 @@ Begin
         if (menu1<>nil) and (pressed=false) and mrange(762,61,981,652) then loadtext;
         hovermenus(x,y,state);
       end;
-       // if (x<>lastx) or (y<>lasty) then hovermenus(x,y,state); // deal with menus
       checkmenus(x,y,state);
       if (car=#27) and (pressed=false) then begin
-        //do you want to quit?
+        {do you want to quit?}
         ver:=yesnow(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -',textwin);
         car:=#0;
       end;
