@@ -169,7 +169,7 @@ Begin
          {Check if file exists}
          if not fileexists(fil) then
          Begin
-           alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -','Parameter: ' + fil +chr(10)+'Error: File not found.');
+           alertw(win1,309,201,680,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -','Parameter: ' + fil +chr(10)+'Error: File not found.');
            exit;
          end;
     end
@@ -181,7 +181,7 @@ Begin
     i:=filesize(f);
     str(i,filesi);
     boton(24,getmaxy-96,getmaxx-26,getmaxy-74,1,$44da,false,0);
-    esc(30,getmaxy-88,'File: '+Paramstr(1) + '  ' + '[Loading: '+filesi+' bytes]',blackc);
+    esc(30,getmaxy-88,'File: '+fileop + '  ' + '[Loading: '+filesi+' bytes]',blackc);
     count:=0;
     addr;
     while not eof(f) do Begin
