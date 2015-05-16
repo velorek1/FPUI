@@ -38,22 +38,22 @@
 Unit gfxn;
 Interface
 
-Uses ptcgraph,ptccrt; // equivalents to Borland Pascal units
+Uses ptcgraph,ptccrt; { equivalents to Borland Pascal units}
 
 Const
-//list of some basic 16bit colours
+{list of some basic 16bit colours}
         {d/l + colour + c }
 
         whitec = $ffff;
         blackc = $0000;
         dgreyc = $7bef;
-        lgreyc = $bdf7; //light grey
+        lgreyc = $bdf7; {light grey}
         lgreyc2 = $C618;
         dredc = $7800;
         lredc = $f800;
         dbluec = $000F;
         lbluec = $1f;
-        lbluec2 = $54b; // blueish
+        lbluec2 = $54b; { blueish}
         dgreenc = $03E0;
         lgreenc = $7e0;
         dcyanc = $03EF;
@@ -62,17 +62,15 @@ Const
         lyellowc = $AFE5;
         orangec = $fbe0;
         brownc = $79e0;
-        tilec = $5471; // similar to tile
+        tilec = $5471; { similar to tile}
         pinkc = $f81f;
         purplec = $780F;
         olivec = $7BE0;
 
 
-//Procedures
 procedure Inicia(Fullscreen:boolean);
 procedure Fin;
 procedure Rectangl(x1,y1,x2,y2:integer;cborde,tipo,cfondo:word);
-//textarea?
 procedure gTextbox(x1,y2,x2:integer;var yo:string;caden:string;colfondo,colefore,collabel,tecl:word;actley:boolean);
 procedure gNumbox(x1,y2,x2:integer;var yo:string;caden:string;colfondo,colefore,collabel,tecl:word;actley:boolean);
 procedure Boton(xx1,yy1,xx2,yy2:integer;tipo:word;cfondo:word;t:boolean;tyh:integer);
@@ -80,11 +78,11 @@ Procedure Bcol(xx1,yy1,xx2,yy2:integer;tipo:word;cfondo:word;arri,abaj:word;t:bo
 procedure Linex(tra1,ra1,tra2,ra2:integer);
 procedure Fondo(color:word);
 procedure Esc(x,y:integer;s:string;col:word);
-procedure Escc(x1,y1,x2,y2:integer;s:string;col:word); //writes text and centers it in an area
+procedure Escc(x1,y1,x2,y2:integer;s:string;col:word); {writes text and centers it in an area}
 procedure Fuente(fu,dir:word;siz:word);
 Implementation
 procedure Inicia(Fullscreen:boolean);
-// Start graphics. Fullscreen boolean
+{ Start graphics. Fullscreen boolean}
 var
   gd,gm: integer;
 begin
@@ -93,32 +91,32 @@ begin
   initgraph(gd, gm, '');
 end;
 Procedure Fin;
-//close graph
+{close graph}
 begin
   Closegraph;
 end;
 
 Procedure bcol(xx1,yy1,xx2,yy2:integer;tipo:word;cfondo:word;arri,abaj:word;t:boolean);
-// Draws a button with color
-// There are 12 Fill styles
+{ Draws a button with color
+ There are 12 Fill styles}
 Begin
   setfillstyle(tipo,cfondo);
-  bar(xx1,yy1,xx2,yy2); //Draws a rectangle with the current colour and fillstyle
+  bar(xx1,yy1,xx2,yy2); {Draws a rectangle with the current colour and fillstyle}
   if t then begin
-    // Button unpressed
-    setcolor(arri);   // upper corners
+    { Button unpressed}
+    setcolor(arri);   { upper corners}
     line(xx1,yy1,xx2,yy1);
     line(xx1,yy1,xx1,yy2);
-    setcolor(abaj);  // lower corners
+    setcolor(abaj);  {lower corners}
     line(xx2,yy1,xx2,yy2);
     line(xx1,yy2,xx2,yy2);
   end;
   if t=false then begin
-    // Button pressed
-    setcolor(abaj);  //upper corners
+    {Button pressed}
+    setcolor(abaj);  {upper corners}
     line(xx1,yy1,xx2,yy1);
     line(xx1,yy1,xx1,yy2);
-    setcolor(arri); //lower corners
+    setcolor(arri); {lower corners}
     line(xx2,yy1,xx2,yy2);
     line(xx1,yy2,xx2,yy2);
   end;
@@ -135,11 +133,11 @@ tyh:type of button
     4: rectangle black/white or when button is pressed is better; t:=true/false;
 *)
 begin
-  setfillstyle(tipo,cfondo); // select background colour and fillstyle
-  bar(xx1,yy1,xx2,yy2); // draw a rectangle with the above-mentioned pattern
+  setfillstyle(tipo,cfondo); { select background colour and fillstyle}
+  bar(xx1,yy1,xx2,yy2); { draw a rectangle with the above-mentioned pattern}
 
   if t then begin
-    //unpressed button
+    {unpressed button}
     setcolor(whitec);
     line(xx1,yy1,xx2,yy1);
     line(xx1,yy1,xx1,yy2);
@@ -148,7 +146,7 @@ begin
     line(xx1,yy2,xx2,yy2);
   end;
   if t=false then begin
-    //pressed button
+    {pressed button}
     setcolor(blackc);
     line(xx1,yy1,xx2,yy1);
     line(xx1,yy1,xx1,yy2);
@@ -159,7 +157,7 @@ begin
 
 
   if tyh=1 then begin
-    //    1: Black line       ; t:=true
+    {   1: Black line       ; t:=true}
     setcolor(blackc);
     line(xx1-1,yy1-1,xx2,yy1-1);
     line(xx1-1,yy1-1,xx1-1,yy2);
@@ -170,7 +168,7 @@ begin
   end;
 
   if tyh=2 then begin
-   // 2: Black line x2    ; t:=true
+   { 2: Black line x2    ; t:=true}
     setcolor(blackc);
     line(xx1-1,yy1-1,xx2+1,yy1-1);
     line(xx1-1,yy1-1,xx1-1,yy2);
@@ -186,7 +184,7 @@ begin
     setcolor(blackc);
   end;
   if tyh=3 then begin
-   // 3: White line x2    ; t:=true
+   {3: White line x2    ; t:=true}
     setcolor(whitec);
     line(xx1+1,yy1+1,xx2,yy1+1);
     line(xx1+1,yy1+1,xx1+1,yy2);
@@ -204,7 +202,7 @@ begin
   end;
 
  If tyh=4 then begin
-    //rectangle or when accentuated pressed button
+    {rectangle or when accentuated pressed button}
     setcolor(blackc);
     line(xx1-1,yy1-1,xx2,yy1-1);
     line(xx1-1,yy1-1,xx1-1,yy2);
@@ -232,20 +230,20 @@ begin
   line(x1,y2,x2,y2);
 end;
 procedure fondo(color:word);
-//sets background color and cleans the screen
+{sets background color and cleans the screen}
 begin
   setbkcolor(color);
   cleardevice;
 end;
 procedure esc(x,y:integer;s:string;col:word);
-//writes a string in the specific coordinates
+{writes a string in the specific coordinates}
 begin
   setcolor(col);
   outtextxy(x,y,s);
 end;
 
 procedure escc(x1,y1,x2,y2:integer;s:string;col:word);
-//Draws and centers a text in an area
+{Draws and centers a text in an area}
 var
   pp,ty,XEXE,tt,yeye:integer;
   LON:INTEGER;
@@ -263,7 +261,7 @@ begin
 end;
 
 procedure fuente(fu,dir:word;siz:word);
-//Changes font
+{Changes font}
 begin
   settextstyle(fu, dir,siz);
 end;
@@ -285,62 +283,62 @@ var
   tecla:char;
 begin
   lon:=length(caden);
-  lon:=lon * 8; //each character in the string is separated by 8 pixels
+  lon:=lon * 8; {each character in the string is separated by 8 pixels}
 
-  esc(x1,y2,caden,collabel); //write label
+  esc(x1,y2,caden,collabel); {write label}
 
   if colfondo=whitec then
-    //make it hightlight if nbackground colour is white
+    {make it hightlight if nbackground colour is white}
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,4)
   else
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,0);
 
 if actley=true then begin
-//when textbox is activated
+{when textbox is activated}
 
-    ESC(X1+lon+1,Y2,'³',colefore); //cursor
+    ESC(X1+lon+1,Y2,'|',colefore); {cursor}
 
-    cad:= ''; //initialises variable
+    cad:= ''; {initialises variable}
     oldx:=x1+lon+2;
     repeat
      {Textbox input loop}
 
      if keypressed then begin
        tecla:=readkey;
-       if (tecla>chr(31)) and (tecla<chr(126)) then begin  //range of allowed keys
+       if (tecla>chr(31)) and (tecla<chr(126)) then begin  {range of allowed keys}
           if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
-          //ignore arrow keys
+          {ignore arrow keys}
             if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
-             //boundaries
-              cad:=cad+tecla; //
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
+             {boundaries}
+              cad:=cad+tecla;
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               esc(oldx,y2,tecla,colefore);
               oldx:=oldx+8;
-              esc(oldx,y2,'³',colefore);
+              esc(oldx,y2,'|',colefore);
             end;
           end;
        end;
        if tecla=#8 then begin
-         //backspace key
+         {backspace key}
           if oldx>x1+lon+2 then begin
-          //if we haven't reach the beginning of the textbox
+          {if we haven't reach the beginning of the textbox}
             cad2:='';
             if length(cad)>1 then
-              for i:=1 to length(cad)-1 do cad2:=cad2+cad[i] //remove last character from string;
+              for i:=1 to length(cad)-1 do cad2:=cad2+cad[i] {remove last character from string;}
             else
               cad2:='';
               cad:=cad2;
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               oldx:=oldx-8;
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-              esc(oldx,y2,'³',colefore);
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
+              esc(oldx,y2,'|',colefore);
             end;
           end;
        end;
     until (tecla=#13) or (tecla=#27);
-    rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-    if tecla=#13 then yo:=cad; //saves string if enter key was pressed
-    tecla:=chr(0); //clear key buffer
+    rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
+    if tecla=#13 then yo:=cad; {saves string if enter key was pressed}
+    tecla:=chr(0); {clear key buffer}
 end;
 end;
 procedure gnumbox(x1,y2,x2:integer;var yo:string;caden:string;colfondo,colefore,collabel,tecl:word;actley:boolean);
@@ -360,25 +358,22 @@ var
   tecla:char;
 begin
   lon:=length(caden);
-  lon:=lon * 8; //each character in the string is separated by 8 pixels
+  lon:=lon * 8; {each character in the string is separated by 8 pixels}
 
-  esc(x1,y2,caden,collabel); //write label
+  esc(x1,y2,caden,collabel); {write label}
 
   if colfondo=whitec then
-    //make it hightlight if nbackground colour is white
+    {make it hightlight if nbackground colour is white}
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,4)
   else
     boton(x1+lon,y2-4,x2+lon,y2+12,1,colfondo,false,0);
 
 if actley=true then begin
-//when textbox is activated
+{when textbox is activated}
 
-    ESC(X1+lon+1,Y2,'³',colefore); //cursor
+    ESC(X1+lon+1,Y2,'|',colefore); {cursor}
 
-//    if yo <> '' then
-//        cad:=yo;
-//    else
-    cad:= ''; //initialises variable
+    cad:= ''; {initialises variable}
     oldx:=x1+lon+2;
 
     repeat
@@ -386,45 +381,45 @@ if actley=true then begin
 
      if keypressed then begin
        tecla:=readkey;
-       if (tecla>chr(47)) and (tecla<chr(58)) then begin  //range of allowed keys
+       if (tecla>chr(47)) and (tecla<chr(58)) then begin  {range of allowed keys}
           if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
-          //ignore arrow keys
+          {ignore arrow keys}
             if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
-             //boundaries
-              cad:=cad+tecla; //
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
+             {boundaries}
+              cad:=cad+tecla;
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               esc(oldx,y2,tecla,colefore);
               oldx:=oldx+8;
-              esc(oldx,y2,'³',colefore);
+              esc(oldx,y2,'|',colefore);
             end;
           end;
        end;
        if tecla=#8 then begin
-         //backspace key
+         {backspace key}
           if oldx>x1+lon+2 then begin
-          //if we haven't reach the beginning of the textbox
+          {if we haven't reach the beginning of the textbox}
             cad2:='';
             if length(cad)>1 then
-              for i:=1 to length(cad)-1 do cad2:=cad2+cad[i] //remove last character from string;
+              for i:=1 to length(cad)-1 do cad2:=cad2+cad[i] {remove last character from string;}
             else
               cad2:='';
               cad:=cad2;
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               oldx:=oldx-8;
-              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-              esc(oldx,y2,'³',colefore);
+              rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
+              esc(oldx,y2,'|',colefore);
             end;
           end;
        end;
     until (tecla=#13) or (tecla=#27);
-    rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  //rectangle to delete previous characters and cursor
-    if tecla=#13 then yo:=cad; //saves string if enter key was pressed
-    tecla:=chr(0); //clear key buffer
+    rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
+    if tecla=#13 then yo:=cad; {saves string if enter key was pressed}
+    tecla:=chr(0); {clear key buffer}
 end;
 end;
 
 procedure linex(tra1,ra1,tra2,ra2:integer);
-//draws a black and white line for separation
+{draws a black and white line for separation}
 begin
   setcolor(blackc);
   line(tra1,ra1,tra2,ra1);
