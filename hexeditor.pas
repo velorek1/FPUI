@@ -399,7 +399,7 @@ begin
          end;
        end;
      end;
-     if mrange(122,22,270,100) and (pressed) and (menux[1]<>nil) then begin
+     if mrange(122,22,270,100) and (pressed) and (menux[3]<>nil) then begin
      {Help}
        start_vmenu_mouse(menops[3],122,22,270,100);
        if (kglobal=#1) or (kglobal=#27) or (kglobal =#13) then begin
