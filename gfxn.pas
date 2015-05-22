@@ -296,7 +296,7 @@ begin
 if actley=true then begin
 {when textbox is activated}
 
-    ESC(X1+lon+1,Y2,'|',colefore); {cursor}
+    ESC(X1+lon+1,Y2,chr(179),colefore); {cursor}
 
     cad:= ''; {initialises variable}
     oldx:=x1+lon+2;
@@ -314,7 +314,7 @@ if actley=true then begin
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               esc(oldx,y2,tecla,colefore);
               oldx:=oldx+8;
-              esc(oldx,y2,'|',colefore);
+              esc(oldx,y2,chr(179),colefore);
             end;
           end;
        end;
@@ -331,7 +331,7 @@ if actley=true then begin
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               oldx:=oldx-8;
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
-              esc(oldx,y2,'|',colefore);
+              esc(oldx,y2,chr(179),colefore);
             end;
           end;
        end;
@@ -371,7 +371,7 @@ begin
 if actley=true then begin
 {when textbox is activated}
 
-    ESC(X1+lon+1,Y2,'|',colefore); {cursor}
+    ESC(X1+lon+1,Y2,chr(179),colefore); {cursor}
 
     cad:= ''; {initialises variable}
     oldx:=x1+lon+2;
@@ -390,7 +390,7 @@ if actley=true then begin
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               esc(oldx,y2,tecla,colefore);
               oldx:=oldx+8;
-              esc(oldx,y2,'|',colefore);
+              esc(oldx,y2,chr(179),colefore);
             end;
           end;
        end;
@@ -407,7 +407,7 @@ if actley=true then begin
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
               oldx:=oldx-8;
               rectangl(oldx-1,y2-2,oldx+7,y2+10,colfondo,1,colfondo);  {rectangle to delete previous characters and cursor}
-              esc(oldx,y2,'|',colefore);
+              esc(oldx,y2,chr(179),colefore);
             end;
           end;
        end;
