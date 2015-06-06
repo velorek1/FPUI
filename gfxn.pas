@@ -69,6 +69,7 @@ Const
 
 
 procedure Inicia(Fullscreen:boolean);
+procedure Init2(a,b:integer;Fullscreen:boolean);
 procedure Fin;
 procedure Rectangl(x1,y1,x2,y2:integer;cborde,tipo,cfondo:word);
 procedure gTextbox(x1,y2,x2:integer;var yo:string;caden:string;colfondo,colefore,collabel,tecl:word;actley:boolean);
@@ -81,8 +82,18 @@ procedure Esc(x,y:integer;s:string;col:word);
 procedure Escc(x1,y1,x2,y2:integer;s:string;col:word); {writes text and centers it in an area}
 procedure Fuente(fu,dir:word;siz:word);
 Implementation
-procedure Inicia(Fullscreen:boolean);
+procedure Init2(a,b:integer;Fullscreen:boolean);
 { Start graphics. Fullscreen boolean}
+var
+  gd,gm: integer;
+begin
+  Fullscreengraph:=Fullscreen;
+  gd :=a; {preferred,1024x768x32}
+  gm:=b;
+  initgraph(gd, gm, '');
+end;
+procedure Inicia(Fullscreen:boolean);
+{ Start graphics. Full res. Fullscreen boolean}
 var
   gd,gm: integer;
 begin
@@ -95,7 +106,6 @@ Procedure Fin;
 begin
   Closegraph;
 end;
-
 Procedure bcol(xx1,yy1,xx2,yy2:integer;tipo:word;cfondo:word;arri,abaj:word;t:boolean);
 { Draws a button with color
  There are 12 Fill styles}
