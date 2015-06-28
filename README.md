@@ -3,6 +3,9 @@ Amateur Freepascal Units and Programs
 *My units use PtcGraph, PtcCrt, PtcMouse included in FreePascal 2.6 or higher.
 
 I created this only as a 'research project' or better-said a hobby.
+NOTE: FOR X11 headers in linux install: 
+sudo apt-get install xorg-dev
+
 Units:
 ======
 gfxn.pas >> Graphic Unit to add buttons, textbox;
