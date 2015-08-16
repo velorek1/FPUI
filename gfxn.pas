@@ -316,8 +316,11 @@ if actley=true then begin
      if keypressed then begin
        tecla:=readkey;
        if (tecla>chr(31)) and (tecla<chr(126)) then begin  {range of allowed keys}
-          if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
-          {ignore arrow keys}
+        {ignore arrow keys}
+        if tecla=#75 then tecla:='K';
+        if tecla=#80 then tecla:='P';
+        if tecla=#72 then tecla:='H';
+        if tecla=#77 then tecla:='M';
             if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
              {boundaries}
               cad:=cad+tecla;
@@ -326,7 +329,6 @@ if actley=true then begin
               oldx:=oldx+8;
               esc(oldx,y2,chr(179),colefore);
             end;
-          end;
        end;
        if tecla=#8 then begin
          {backspace key}
@@ -392,8 +394,11 @@ if actley=true then begin
      if keypressed then begin
        tecla:=readkey;
        if (tecla>chr(47)) and (tecla<chr(58)) then begin  {range of allowed keys}
-          if (tecla<>#75) and (tecla<>#77) and (tecla<>#72) and (tecla<>#80) then begin
-          {ignore arrow keys}
+        {ignore arrow keys}
+        if tecla=#75 then tecla:='K';
+        if tecla=#80 then tecla:='P';
+        if tecla=#72 then tecla:='H';
+        if tecla=#77 then tecla:='M';
             if (length(cad)<tecl) and (oldx<x2+lon-8) then begin
              {boundaries}
               cad:=cad+tecla;
@@ -402,7 +407,6 @@ if actley=true then begin
               oldx:=oldx+8;
               esc(oldx,y2,chr(179),colefore);
             end;
-          end;
        end;
        if tecla=#8 then begin
          {backspace key}
