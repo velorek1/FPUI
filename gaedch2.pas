@@ -37,6 +37,7 @@ Procedure ChartoInt(ch:char;var i:byte);
 Procedure Start_Table(mHandler: tmNodo;var mdata:string; cols : integer; vertical:boolean);
 Procedure Start_Table_mouse(var mHandler: tmNodo;var mdata:string; cols : integer; vertical:boolean;rgx1,rgy1,rgx2,rgy2:integer);
 Procedure gotoP(var mHandler:tmNodo;po:integer);
+procedure vscroll(var menu1:tmnodo;x1,y1:integer;list1:array of string;show_index,b1,f1,bs1,fs1:word;pressed:boolean);
 Procedure Crumble(var mHandler : tmNodo);
 Procedure mDisplay;
 
@@ -703,4 +704,114 @@ Begin
   mdata:=aux^.nChoice;
   if (ch=#0) and (s=1) then kGlobal:=#1; //mouse clicked
 end;
+procedure vscroll(var menu1:tmnodo;x1,y1:integer;list1:array of string;show_index,b1,f1,bs1,fs1:word;pressed:boolean);
+var
+  aux:tmNodo;
+  inumber,factor:integer;
+  pointer,pointix:integer;
+  dir,endx:boolean;
+Procedure Start_vList(var mHandler:tmNodo;displaynum:integer);
+var ch:char;
+Begin
+
+        mDisplay;
+        if mFirst = nil then Begin
+                ErrorCode:=1;
+                Writeln('Error ',ErrorCode,': no items found');
+        end
+        Else Begin
+               aux:=mFirst;
+               gotop(aux,displaynum);
+if aux^.sosub=false then
+Boton(aux^.xwhere-4,aux^.ywhere-4,aux^.xwhere+(length(aux^.nChoice)*8)+2,aux^.ywhere+10,1,aux^.mSBackcolor,true,0)
+else
+Boton(aux^.xwhere-4,aux^.ywhere-4,aux^.xwhere+(length(aux^.nChoice)*8)+2,aux^.ywhere+10,1,aux^.mSBackcolor,false,0);
+
+               esc(aux^.xwhere,aux^.ywhere,aux^.nChoice,aux^.mSForecolor);
+
+         Repeat
+                        ch:=readkey;
+          if aux^.nlistcount=1 then begin dir:=false; endx:=false; end;
+          if aux^.nlistcount>1 then dir:=true;
+          if aux^.nlistcount+pointer=inumber then endx:=true;
+
+               if (ch=#80) and (aux=mlast) then  break;
+               if (ch=#72) and (aux=mfirst) then break;
+                        Case ch of
+                                #80 : begin  move_down(aux);  end;
+                                #72 : begin  move_up(aux); end;
+			End;
+	   kglobal:=ch;
+
+               until ((ch=#27) or (ch=#13));
+        mCurrent:=aux;
+        mCurrent^.nChoice := Aux^.nChoice;
+        mCurrent^.nListCount := Aux^.nListCount;
+        mHandler:=aux;
+        firsttime:=false;
+
+	   kGlobal:=ch;
+	End;
+   End;
+
+procedure loadlist(pointer:integer);
+var
+  y,line:integer;
+begin
+ line:=1;
+ inumber:=length(list1);
+ if inumber>=show_index then begin
+   factor:=inumber - (show_index-1);
+   if pointer<inumber then begin
+     for y:=pointer to pointer+show_index-1 do begin
+       add_item(menu1,list1[y],x1,y1+line);
+       line:=line+15;
+     end;
+   end;
+ end;
+end;
+
+BEGIN
+ inumber:=length(list1); {Total number of elements in array}
+ if inumber>=show_index then begin
+   cMenu(menu1,b1,f1,bs1,fs1,pressed);
+   pointer:=0;  {Counter of items}
+   pointix:=1;  {Pointer to the item in the list}
+   loadlist(0);
+   endx:=false;
+   repeat
+
+       if pointer < inumber then begin
+          if (pointer<factor-1) and (pointer>=0) then begin
+            start_vlist(menu1,pointix);
+
+            if kglobal=#80 then begin
+              pointer:=pointer+1;
+              pointix:=show_index;
+            end;
+          end;
+
+          if (pointer>0) and (kglobal=#72) then begin
+            pointer:=pointer-1;
+            pointix:=1;
+          end;
+       end;
+
+     if pointer < inumber then begin
+       crumble(menu1);
+       cMenu(menu1,b1,f1,bs1,fs1,pressed);
+       loadlist(pointer);
+     end;
+
+     if pointer=factor-1 then begin
+      start_vlist(menu1,pointix);
+     end;
+
+     until (kglobal=#27) or (kglobal=#13);
+    if dir=true then gotop(menu1,aux^.nlistcount+1);
+    if (dir=false) or (endx=true) then gotop(menu1,aux^.nlistcount);
+end
+else
+    { writeln('List is shorter than display');}
+END;
 End.
