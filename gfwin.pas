@@ -8,14 +8,15 @@ type
              tmWinData = RECORD
                           wX1,wY1 : longint; {record position}
                           wX2,wY2 : longint; {record position}
-                          WinCol : word; { window color display}
-                          WinBuffer : array[0..1024,0..768] of longint; { window image buffer}
+                          WinCol : longint; { window color display}
+                          WinBuffer : Pointer; { window image buffer}
+                          Winsize: longint;
                          END;
 
-PROCEDURE gWindow(var winID:tmWin;x1,y1,x2,y2:longint;WcOL:word);
-procedure alertw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:word;title,text:string);
-function yesnow(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:word;title,text:string):boolean;
-procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:word;title,text:string;var itext:string;caption:string;ilength:integer);
+PROCEDURE gWindow(var winID:tmWin;x1,y1,x2,y2:longint;WcOL:longint);
+procedure alertw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:longint;title,text:string);
+function yesnow(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:longint;title,text:string):boolean;
+procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,WFontTextc:longint;title,text:string;var itext:string;caption:string;ilength:longint);
 PROCEDURE gCloseWin(var winID:tmWin);
 FUNCTION  mRange(x1,y1,x2,y2:longint):boolean;
 
@@ -33,16 +34,14 @@ begin
     mrange:=false;
 end;
 
-procedure gWindow(var winID:tmWin;x1,y1,x2,y2:longint;WcOL:word);
+procedure gWindow(var winID:tmWin;x1,y1,x2,y2:longint;WcOL:longint);
 var
   i,j:longint;
 begin
     new(WinId); {new object}
-    for i:=x1 to x2 do
-       for j:=y1 to y2 do begin
-           if (i<=getmaxx) and (j<=getmaxy) and (i>=0) and (j>=0) then  { failsafe to be in bound of the array}
-             WinId^.Winbuffer[i,j]:=getpixel(i,j); {record pixels from area before drawing}
-       end;
+      winid^.winsize:=imagesize(x1,y1,x2,y2);
+      getmem(winid^.winbuffer,winid^.winsize);
+      getimage(x1,y1,x2,y2,winid^.winbuffer^);
       With WinId^ do Begin
             wX1 := X1;
             wY1 := Y1;
@@ -57,24 +56,18 @@ var
   i,j:longint;
   x1,y1,x2,y2:longint;
 Begin
-
     With WinId^ do Begin {retrieve position data from pointer}
           X1 := wX1;
           Y1 := wY1;
           X2 := wX2;
           Y2 := wY2;
     end;
-
-    for i:=x1 to x2 do
-     for j:=y1 to y2 do begin
-         if (i<=getmaxx) and (j<=getmaxy) and (i>=0) and (j>=0) then { failsafe to be in bound of the array}
-         putpixel(i,j,winId^.Winbuffer[i,j]); {redraw previous image}
-     end;
-
-     dispose(winId); {free memory}
-     winid:=nil;
+    Putimage(x1,y1,winid^.winbuffer^,normalput);
+    freemem(winid^.winbuffer,winid^.winsize);
+    dispose(winId); {free memory}
+    winid:=nil;
 end;
-Procedure alertw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:word;title,text:string);
+Procedure alertw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:longint;title,text:string);
 {Alert window}
 const
         trail_max = 2; {number of windows to create a trail when the window is moved}
@@ -82,7 +75,7 @@ var ch:char;
 xmid,mx,my,state,xsize,ysize:longint;
 oldmx,oldmy:longint; {keep track of old mouse values}
 trail:array[0..trail_max] of tmwin;
-wincount,i:integer;
+wincount,i:longint;
 posx,posy:longint;
 begin
     {draw window}
@@ -231,7 +224,7 @@ begin
   until (ch=#27);
  gclosewin(winid);
 End;
-Function yesnow(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:word;title,text:string):boolean;
+Function yesnow(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:longint;title,text:string):boolean;
 {Yes/No window}
 const
         trail_max = 2; { number of windows to create a trail when the window is moved}
@@ -239,7 +232,7 @@ var ch:char;
 mx,my,state,xsize,ysize:longint;
 oldmx,oldmy:longint; {keep track of old mouse values }
 trail:array[0..trail_max] of tmwin;
-wincount,i:integer;
+wincount,i:longint;
 posx,posy:longint;
 begin
     {draw window}
@@ -388,10 +381,10 @@ begin
  gclosewin(winid);
 
 End;
-Procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:word;title,text:string;var itext:string;caption:string;ilength:integer);
+Procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFontTitc,wFontTextc:longint;title,text:string;var itext:string;caption:string;ilength:longint);
 {Alert window}
-var 
-i:integer;
+var
+i:longint;
 posx,posy:longint;
 begin
     {draw window}
