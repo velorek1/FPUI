@@ -108,20 +108,24 @@ updatescreen(true);
 end;
 
 Procedure Fondo(num :  integer);
+{fills the screen with color}
 var i,j : integer;
 Begin
  for j:=1 to screenheight do
     for i:=1 to screenwidth do
       esc(i,j,chr(32),num,num,false);
-updatescreen(true);
+      setcursorpos(0,0);
+      updatescreen(true);
 end;
 Procedure Fondo2(b1,c1 : integer;fillch:char);
+{fills the screen with color and specified char}
 var i,j : integer;
 Begin
  for j:=1 to screenheight do
     for i:=1 to screenwidth do
       esc(i,j,fillch,b1,c1,false);
-updatescreen(true);
+      setcursorpos(0,0);
+      updatescreen(true);
 end;
 
 Procedure Crumble(mHandler : tmNodo);
