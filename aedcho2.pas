@@ -32,8 +32,8 @@ Var
 Procedure cMenu(var mHandler: tmNodo;b1,f1,bs1,fs1:integer);
 Procedure Add_item(var mHandler	: tmNodo;nItem:string;x,y:integer);
 Procedure Update(var mHandler	: tmNodo;nItem:string;num:integer);
-Procedure Start_vMenu(mHandler:tmNodo);
-Procedure Start_hMenu(mHandler: tmNodo);
+Procedure Start_vMenu(var mHandler:tmNodo);
+Procedure Start_hMenu(var mHandler: tmNodo);
 procedure vscroll(var menu1:tmnodo;x1,y1:integer;list1:array of string;show_index,b1,f1,bs1,fs1:integer);
 Procedure Fondo(num : integer);
 Procedure Fondo2(b1,c1 : integer;fillch:char);
@@ -108,7 +108,6 @@ updatescreen(true);
 end;
 
 Procedure Fondo(num :  integer);
-{fills the screen with color}
 var i,j : integer;
 Begin
  for j:=1 to screenheight do
@@ -118,7 +117,6 @@ Begin
       updatescreen(true);
 end;
 Procedure Fondo2(b1,c1 : integer;fillch:char);
-{fills the screen with color and specified char}
 var i,j : integer;
 Begin
  for j:=1 to screenheight do
@@ -283,7 +281,7 @@ Begin
    {next item}
   esc(auxx^.xwhere,auxx^.ywhere,auxx^.nChoice,auxx^.mSBackcolor,auxx^.mSForecolor,false);
 End;
-Procedure Start_vMenu(mHandler : tmNodo);
+Procedure Start_vMenu(var mHandler : tmNodo);
 var aux:tmNodo;
 ch:tkeyevent;
 Begin
@@ -300,22 +298,24 @@ Begin
                 Repeat
                         updatescreen(true);
                         ch:=TranslateKeyEvent(GetKeyEvent);
+                        kglobal:=GetKeyEventChar(ch);
                         Case GetKeyEventCode(ch) of
                                 kbdDown : move_down(aux);
                                 kbdUp : move_up(aux);
+                                kbdleft : begin kglobal:=#75; break; end;
+                                kbdright: begin kglobal:=#77; break; end;
 			End;
-		   kglobal:=GetKeyEventChar(ch);
 
 		until (kglobal=chr(27))  or (kglobal=chr(13));
         mCurrent:=aux;
         mCurrent^.nChoice := Aux^.nChoice;
         mCurrent^.nListCount := Aux^.nListCount;
-        mHandler:=mFirst;
+        mHandler:=aux;
+        mHandler^.nChoice := Aux^.nChoice;
         firsttime:=false;
-	kglobal:=GetKeyEventChar(ch);
         End;
    End;
-Procedure Start_hMenu(mHandler : tmNodo);
+Procedure Start_hMenu(var mHandler : tmNodo);
 var aux:tmNodo;
 ch:tkeyevent;
 Begin
@@ -332,16 +332,17 @@ Begin
                 Repeat
                      updatescreen(true);
                      ch:=TranslateKeyEvent(GetKeyEvent);
+                     kglobal:=GetKeyEventChar(ch);
                         Case GetKeyEventCode(ch) of
                                 kbdright : move_down(aux);
                                 kbdleft : move_up(aux);
 			End;
-		   kglobal:=GetKeyEventChar(ch);
-         	until (kglobal=chr(27))  or (kglobal=chr(13));
+                until (kglobal=chr(27))  or (kglobal=chr(13));
         mCurrent:=aux;
         mCurrent^.nChoice := Aux^.nChoice;
         mCurrent^.nListCount := Aux^.nListCount;
-        mHandler:=mFirst;
+        mHandler:=aux;
+        mHandler^.nChoice := Aux^.nChoice;
         firsttime:=false;
         kglobal:=GetKeyEventChar(ch);
         End;
@@ -434,6 +435,7 @@ var
   inumber,factor:integer;
   pointer,pointix:integer;
   dir,endx:boolean;
+  notscroll:boolean;
 Procedure Start_vList(var mHandler:tmNodo;displaynum:integer);
 var ch:tkeyevent;
 Begin
@@ -449,26 +451,30 @@ Begin
                esc(aux^.xwhere,aux^.ywhere,aux^.nChoice,aux^.mSBackcolor,aux^.mSForecolor,true);
                InitKeyboard;
                 Repeat
+                       updatescreen(true);
                         ch:=TranslateKeyEvent(GetKeyEvent);
            if aux^.nlistcount=1 then begin dir:=false; endx:=false; end;
           if aux^.nlistcount>1 then dir:=true;
           if aux^.nlistcount+pointer=inumber then endx:=true; {Samll correction for last items}
+                    kglobal:=GetKeyEventChar(ch);
+                    if GetKeyEventCode(ch) =  kbddown then kglobal:=#80;
+                    if GetKeyEventCode(ch) = kbdup then kglobal:=#72;
+               if (kglobal=#80) and (aux=mlast) then break;
+               if (kglobal=#72) and (aux=mfirst) then break;
 
-               if (GetKeyEventCode(ch)=kbddown) and (aux=mlast) then  break;
-               if (GetKeyEventCode(ch)=kbdup) and (aux=mfirst) then break;
-                        Case GetKeyEventCode(ch) of
-                                kbddown : begin  move_down(aux);  end;
-                                kbdup : begin  move_up(aux); end;
+                       Case GetKeyEventCode(ch) of
+                                kbddown : begin   move_down(aux);  end;
+                                kbdup : begin     move_up(aux); end;
 			End;
-                kglobal:=GetKeyEventChar(ch);
-           until (KGLOBAL=chr(27)) or (KGLOBAL=chr(13));
+                 //   kglobal:=GetKeyEventChar(ch);
 
+               until (KGLOBAL=chr(27)) or (KGLOBAL=chr(13));
+      //pointer:=pointer+1;
         mCurrent:=aux;
         mCurrent^.nChoice := Aux^.nChoice;
         mCurrent^.nListCount := Aux^.nListCount;
         mHandler:=aux;
         firsttime:=false;
-                kglobal:=GetKeyEventChar(ch);
 
         End;
    End;
@@ -488,10 +494,25 @@ begin
      end;
    end;
  end;
+
+ if inumber<show_index then begin
+     {no scroll needed}
+     for y:=0 to inumber-1 do begin
+       add_item(menu1,list1[y],x1,y1+line);
+       line:=line+1;
+     end;
+ end;
 end;
 
 BEGIN
  inumber:=length(list1); {Total number of elements in array}
+ if inumber<=show_index then begin
+  {without scroll}
+   cMenu(menu1,b1,f1,bs1,fs1);
+   loadlist(0);
+   notscroll:=true;
+ end;
+
  if inumber>=show_index then begin
    cMenu(menu1,b1,f1,bs1,fs1);
    pointer:=0;  {Counter of items}
@@ -532,6 +553,8 @@ BEGIN
 end
 else
     { writeln('List is shorter than display');}
+    //loadlist(1);
+    start_vmenu(menu1);
 END;
 
 End.
