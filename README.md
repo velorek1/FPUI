@@ -34,10 +34,17 @@ Programs:
 * wintest.pas >> window test.
 * asc.pas >> Text mode ASCII table with windows and multiple choice using unit video.
 * rdf.pas >> A very rudimentary prototype of a text editor in text mode. 
+* openfile.pas >> Selecting a file in a menu-style dialog. 
 
+In Graph mode:
 ![Alt text](hex1.png?raw=true "Hex Editor - Menu bar")
 ![Alt text](open.png?raw=true "Hex Editor - Open file dialog")
+![Alt text](cpick.png?raw=true "Color picker")
+
+In text mode:
+
 ![Alt text](asc.png?raw=true "ASCII table Text Mode")
 ![Alt text](edit.png?raw=true "Text Editor Text Mode")
+![Alt text](optext.png?raw=true "Open File dialog Text Mode")
 
 EOF
