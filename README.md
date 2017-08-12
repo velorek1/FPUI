@@ -4,7 +4,8 @@ Amateur Freepascal Units and Programs.
 My units use PtcGraph, PtcCrt, PtcMouse included in FreePascal 2.6 or higher for Graphics
 and RTL (video and keyboard) for Text Mode.
 
-I created this only for fun.
+I've created this only for fun. It is a GUI with menus, windows, scroll list with mouse and keyboard interface.
+I have also developed them in text mode using the unit video.
 
 NOTE: FOR X11 headers in linux install: 
 sudo apt-get install xorg-dev
@@ -31,8 +32,12 @@ Programs:
 * hexeditor.pas >> demo hex editor that uses all the libraries.
 * colpick.pas >> True Color(16k) palette picker.
 * wintest.pas >> window test.
-* asc.pas >> Text mode ASCII table with windows and multiple choice.
+* asc.pas >> Text mode ASCII table with windows and multiple choice using unit video.
+* rdf.pas >> A very rudimentary prototype of a text editor in text mode. 
 
-![Alt text](hex1.png?raw=true "Menu bar")
-![Alt text](open.png?raw=true "Open file dialog")
+![Alt text](hex1.png?raw=true "Hex Editor - Menu bar")
+![Alt text](open.png?raw=true "Hex Editor - Open file dialog")
+![Alt text](asc.png?raw=true "ASCII table Text Mode")
+![Alt text](edit.png?raw=true "Text Editor Text Mode")
+
 EOF
