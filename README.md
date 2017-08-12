@@ -33,6 +33,6 @@ Programs:
 * wintest.pas >> window test.
 * asc.pas >> Text mode ASCII table with windows and multiple choice.
 
-![Alt text](/fp-myunits/blob/video_textmode/hex1.png?raw=true "Menu bar")
+![Alt text](hex1.png?raw=true "Menu bar")
 
 EOF
