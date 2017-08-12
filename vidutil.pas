@@ -10,7 +10,7 @@ Coded by Velorek.
 Interface
 
 uses
-  video,hex2bin;
+  video,hex2bin2;
 
 Procedure TextOut(X,Y : Word;Const S : String);
 Procedure Esc(X,Y : Word;Const S : String;bcolor,fcolor:integer;update:boolean);

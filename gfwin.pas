@@ -386,11 +386,16 @@ Procedure inputw(var winID:tmWin;x1,y1,x2,y2:longint;WBackc,WInsidec,wTitlec,WFo
 var
 i:longint;
 posx,posy:longint;
+{procedure window_display();
+begin
+end;}
 begin
     {draw window}
     gwindow(winid,x1,y1,x2,y2,wbackc);
     Boton(x1+5,y1+5,x2-5,y2-5,1,winsidec,true,0);
     Boton(x1+5,y1+5,x2-5,y1+25,1,wtitlec,true,0);
+    Boton(x1+8,y1+8,x1+23,y1+23,1,lgreyc,true,1);
+    Esc(x1+12,y1+8,'_',blackc);
     EscC(x1+5,y1+5,x2-5,y1+25,title,wFontTitc);
     posx:=x1+20;  {values for text}
     posy:=y1+50;

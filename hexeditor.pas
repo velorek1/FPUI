@@ -1,4 +1,4 @@
-Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils;
+Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils,opendunit;
 const
 {messages}
         aboutmsg = 'Hex Editor v0.1' + chr(10) + '2015. = Coded by Velorek =';
@@ -18,7 +18,7 @@ car:char;
 menux:array[1..3] of tmwin;
 menops:array[1..3] of tmnodo;
 pressed,fullsc,ver:boolean;
-
+dirname,filename:string;
 procedure credits;
 {Exit screen}
 begin
@@ -50,7 +50,7 @@ end;
 procedure display;
 {design layout}
 begin
-    inicia(fullsc);
+    init2(a,$116,fullsc); {1024x768x32m}
     fondo($2b98);
     cleardevice;
     showmouse;
@@ -272,13 +272,18 @@ begin
   end;
 end;
 
-procedure opendialog;
+procedure opendialoga;
 {Open file dialog}
 begin
- inputw(win1,309,201,675,351,dgreyc,lgreyc2,$2b98,whitec,blackc,'Open Dialog',mes,intexto,'File:',30);
+ //inputw(win1,309,201,675,351,dgreyc,lgreyc2,$2b98,whitec,blackc,'Open Dialog',mes,intexto,'File:',30);
+    opendialog(dirname,filename);
+    hidemouse;
+    fileop:=filename;
+ if filename<>'' then loadfile(filename);
+ showmouse;
  if intexto<>'' then begin
     fileop:=intexto;
-   loadfile(fileop);
+//   loadfile(fileop);
  end;
 end;
 
@@ -370,10 +375,14 @@ begin
          drawmenus;
          if kglobal<>#27 then begin
            case menops[1]^.nListcount of
-                  5: credits;
+                  5: Begin
+                  if yesnow(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'- Hex Editor -',textwin) then
+                        credits
+                  else
+                  end;
            end;
            case menops[1]^.nListcount of
-                  2: opendialog;
+                  2: opendialoga;
            end;
          end;
        end;
@@ -407,7 +416,7 @@ begin
          drawmenus;
          if kglobal<>#27 then begin
            case menops[3]^.nListcount of
-                  3: alertw(win1,329,201,650,351,dgreyc,lgreyc2,$2b98,whitec,blackc,'About',aboutmsg);
+                  3: alertw(win1,329,201,650,351,$7c34,lgreyc2,$2b98,whitec,blackc,'About',aboutmsg);
            end;
          end;
        end;
