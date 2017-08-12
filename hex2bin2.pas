@@ -4,18 +4,16 @@ UNIT HEX2BIN
 Coded by Velorek.
 Last modified: 17/4/2014
 *)
-Unit Hex2Bin;
+Unit Hex2Bin2;
 INTERFACE
-Uses gfxn,gfwin,ptcgraph;
 
 Const
      TablaHex:array[1..16] of char = ('0','1','2','3','4','5',
                                      '6','7','8','9','A','B','C','D','E','F');
-var win1:tmwin;
 Function Potencia(num,pp:longint):longint;
 Function Dec2Bin(C:longint):string;
 Function Bin2Dec(nbin:string):longint;
-Function Dec2Hex(C:longint):string;
+Function Dec2Hex(C:longint;addzero:boolean):string;
 Function Hex(sbin:string):char;
 Function TablaBin(t:char):string;
 Function Hex2Dec(sHex:String):longint;
@@ -124,7 +122,7 @@ Begin
      End;
 Bin2Dec:=Suma;
 End;
-Function Dec2Hex(C:longint):string;
+Function Dec2Hex(C:longint;addzero:boolean):string;
 {Convierte un n£mero decimal en un n£mero hexadecimal}
 {0 a 255}
 Var
@@ -176,10 +174,11 @@ Begin
                      if q<>r then temp2:=temp2 + globalhex[r-q];
                 end;
              globalhex:=temp2;
-               {if it's only one character}
-             if length(globalhex) = 1 then dec2hex := '0' + globalhex
+               {if it's only one character, add zero?}
+             if (length(globalhex) = 1) and (addzero=true) then dec2hex := '0' + globalhex
              else
                dec2hex := globalhex;
+
 end;
 Function TablaBin(t:char):string;
 Begin

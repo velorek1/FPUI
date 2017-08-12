@@ -15,7 +15,7 @@ Last Modified: 22/08/2016.
 
 Unit winvideo;
 INTERFACE
-Uses Video,vidutil,sysutils,hex2bin;
+Uses Video,vidutil,sysutils,hex2bin2;
         TYPE
          tDual = record
                    ch : char;
