@@ -3,9 +3,8 @@ Uses gaedch2,gfxn,ptcgraph,ptccrt;
 
 *)
 
-var st,sa:array[0..100] of string[125];
+var st:array[0..100] of string[125];
 i,posy,a,b:integer;
-aa:string;
 men:tmnodo;
 teclap:char;
 lista:array[0..49] of string;
@@ -26,6 +25,7 @@ BEGIN
 END;
 
 Begin
+    teclap:=#0;
     Fullscreengraph:=false;
     a:=detect;
     initgraph(a,b,'');
