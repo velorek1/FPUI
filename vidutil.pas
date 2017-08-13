@@ -40,7 +40,7 @@ Procedure Esc(X,Y : Word;Const S : String;bcolor,fcolor:integer;update:boolean);
 {Update is conditional if true might be very slow to display items}
 
 Var
-    W,P,I,M : Word;
+    P,I,M : Word;
     fc,bc, bit2: string;
 begin
   P:=((X-1)+(Y-1)*ScreenWidth);
