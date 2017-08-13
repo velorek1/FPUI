@@ -372,7 +372,7 @@ End;
 Procedure Update(var mHandler: tmNodo;nItem:string;num:integer);
    var aux:tmnodo;
 Begin
-
+     aux:=mCurrent;
      mHandler:=mCurrent;
    { textcolor(mHandler^.mForecolor);
     textbackground(mHandler^.mBackcolor);}
@@ -435,7 +435,7 @@ var
   inumber,factor:integer;
   pointer,pointix:integer;
   dir,endx:boolean;
-  notscroll:boolean;
+//  notscroll:boolean;
 Procedure Start_vList(var mHandler:tmNodo;displaynum:integer);
 var ch:tkeyevent;
 Begin
@@ -510,7 +510,7 @@ BEGIN
   {without scroll}
    cMenu(menu1,b1,f1,bs1,fs1);
    loadlist(0);
-   notscroll:=true;
+ //  notscroll:=true;
  end;
 
  if inumber>=show_index then begin

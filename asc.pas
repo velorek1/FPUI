@@ -1,4 +1,4 @@
-Uses vidutil,video,crt,aedcho2,sysutils,winvideo;
+Uses vidutil,video,aedcho2,sysutils,winvideo;
 {globals}
 var win1,win2,win3,win4: tmWin;
 
@@ -66,12 +66,8 @@ begin
 end;
 procedure credits;
 begin
-  textbackground(0);
-  textcolor(7);
-  clrscr;
-  textbackground(0);
-  textcolor(7);
-  Writeln('Coded by Velorek 2016 - AED -');
+   writeln(chr(27)+'[2J'); //clear screen
+   Writeln('Coded by Velorek 2016 - AED -');
 end;
 begin
       Initvideo;

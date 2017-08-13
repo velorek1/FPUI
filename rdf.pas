@@ -139,7 +139,7 @@ begin
 end;
 procedure buffer;
 var
-wherx,whery,olwherx,olwhery,tick,posy,posx,maxwid,maxline,i:integer;
+wherx,whery,tick,posy,posx,maxwid,maxline,i:integer;
 olposx,olposy:integer;
 head,adds,tail,temp:string;
 win1:tmwin;

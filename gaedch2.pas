@@ -830,11 +830,10 @@ var
   inumber,factor:integer;  {scroll}
   pointer,pointix:integer;  {scroll}
   dir,endx:boolean;   {fix the choice}
-  x,y,s,lastx,lasty:longint;  {mouse coordinates}
+  x,y,s:longint;  {mouse coordinates}
   laststate,lastchoice:integer;   {check whether mouse state changes}
   t:integer; {current choice}
   inrange,selected:boolean;  {inrange: toggle/untoggle mouse; selected: item is selected}
-  so:string;
   notscroll:boolean; {if not scroll is needed}
 
 function collision(mhandler:tmnodo;x,y:integer;var t:integer;var inrange:boolean):boolean;
@@ -872,7 +871,6 @@ End;
 
 Procedure Start_vList(var mHandler:tmNodo;displaynum:integer);
 var ch:char;
-dum:tmNodo;
 Begin
 
         mDisplay;
@@ -903,8 +901,6 @@ Boton(aux^.xwhere-4,aux^.ywhere-4,aux^.xwhere+(length(aux^.nChoice)*8)+2,aux^.yw
 
          Repeat
         showmouse;
-        lastx:=x;
-        lasty:=y;
         getmousestate(x,y,s);
      {check whether scroll buttons are pressed}
      if notscroll then begin

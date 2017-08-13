@@ -1,9 +1,9 @@
 Program openfile;
 Uses aedcho2,video,keyboard,vidutil,winvideo,sysutils;
-var ch:char; c,i,j:integeR;
+var
+i:integer;
 menu1:tmnodo;
 win1:array[0..1] of tmwin;
-lista:array of string;
 filecount,dircount,endx : longint;
 filearray : array of string;
 path,mess1:string;

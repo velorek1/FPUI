@@ -10,7 +10,7 @@ Coded by Velorek.
 Interface
 
 uses
-  video,hex2bin2;
+  video,hex2bin;
 
 Procedure TextOut(X,Y : Word;Const S : String);
 Procedure Esc(X,Y : Word;Const S : String;bcolor,fcolor:integer;update:boolean);
@@ -24,7 +24,7 @@ Implementation
 Procedure TextOut(X,Y : Word;Const S : String);
 {Write string to buffer without attributes in the specified positions}
 Var
-    W,P,I,M : Word;
+    P,I,M : Word;
 
 begin
   P:=((X-1)+(Y-1)*ScreenWidth);

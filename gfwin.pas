@@ -35,8 +35,6 @@ begin
 end;
 
 procedure gWindow(var winID:tmWin;x1,y1,x2,y2:longint;WcOL:longint);
-var
-  i,j:longint;
 begin
     new(WinId); {new object}
       winid^.winsize:=imagesize(x1,y1,x2,y2);
@@ -53,14 +51,14 @@ begin
 end;
 PROCEDURE gCloseWin(var winID:tmWin);
 var
-  i,j:longint;
-  x1,y1,x2,y2:longint;
+  x1,y1:longint;
+  //x2,y2:longint;
 Begin
     With WinId^ do Begin {retrieve position data from pointer}
           X1 := wX1;
           Y1 := wY1;
-          X2 := wX2;
-          Y2 := wY2;
+//        X2 := wX2;
+//        Y2 := wY2;
     end;
     Putimage(x1,y1,winid^.winbuffer^,normalput);
     freemem(winid^.winbuffer,winid^.winsize);

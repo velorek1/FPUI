@@ -7,6 +7,7 @@ const
 var
 {file}
 menu1,menu2:tmNodo;
+win1:tmWin;
 menu1data:string;
 texto:array[0..360] of string[2];
 {hex}
@@ -144,7 +145,7 @@ begin
      posy:=70;
      i:=0;
      repeat
-         rem:=dec2hex(current);
+         rem:=dec2hex(current,false);
          esc(posx,posy,'Offset: ',dgreyc);
          esc(posx+10*8,posy,rem,dbluec);
          posy:=posy+30;
@@ -186,7 +187,7 @@ Begin
     addr;
     while not eof(f) do Begin
       Read(f,Cp);
-      Texto[count]:=dec2hex(cp);
+      Texto[count]:=dec2hex(cp,false);
       count:=count+1;
       if count = 360 then break;
     end;
@@ -429,6 +430,7 @@ Begin
     display;
     ver:=false;
     pressed:=false;
+    intexto:='';
     if paramstr(1)<>'' then fileop:=paramstr(1);
     loadfile(fileop);
     x:=0;

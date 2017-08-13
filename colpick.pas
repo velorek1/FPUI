@@ -171,7 +171,7 @@ Begin
         boton(byte_cell[t].px,byte_cell[t].py,byte_cell[t].px+20,byte_cell[t].py+20,1,byte_cell[t].num,false,3);
         delay(100);
         boton(byte_cell[t].px,byte_cell[t].py,byte_cell[t].px+20,byte_cell[t].py+20,1,byte_cell[t].num,true,3);
-        esc(670,90,'Code: ' + byte_cell[t].code+ ':'+dec2hex(byte_cell[t].num),whitec);
+        esc(670,90,'Code: ' + byte_cell[t].code+ ':'+dec2hex(byte_cell[t].num,false),whitec);
 
       end;
 
@@ -209,7 +209,7 @@ Begin
     end;
       if (collision2(x,y,p)) and (state=1) then begin
         //when you press the shades show alertbox
-        alertw(win1,329,201,650,351,dgreyc,lgreyc,tilec,blackc,blackc,'- Color Information -','> Hex Code: '+ dec2hex(byte_cell2[p].num));
+        alertw(win1,329,201,650,351,dgreyc,lgreyc,tilec,blackc,blackc,'- Color Information -','> Hex Code: '+ dec2hex(byte_cell2[p].num,false));
       end;
 
       if (x<>lastx) or (y<>lasty) then begin
@@ -217,7 +217,7 @@ Begin
         if collision(x,y,t)=true then begin
            {Change color of rectangle when hovering}
            rectangl(650,80,950,360,blackc,1,byte_cell[t].num);
-           esc(670,90,'Code: ' + byte_cell[t].code+ ':'+dec2hex(byte_cell[t].num),blackc);
+           esc(670,90,'Code: ' + byte_cell[t].code+ ':'+dec2hex(byte_cell[t].num,false),blackc);
         end
         else
            rectangl(650,80,950,360,blackc,1,dgreyc);
@@ -228,7 +228,7 @@ Begin
         if collision2(x,y,p)=true then begin
            {Change color of rectangle when hovering}
            rectangl(650,80,950,360,blackc,1,byte_cell2[p].num);
-           esc(670,90,'Code: ' + byte_cell2[p].code+ ':'+dec2hex(byte_cell2[p].num),blackc);
+           esc(670,90,'Code: ' + byte_cell2[p].code+ ':'+dec2hex(byte_cell2[p].num,false),blackc);
           end;
           rectangl(820,4,1022,17,whitec,1,whitec); //clear mouse coordinates  when mouse moves
        end;
