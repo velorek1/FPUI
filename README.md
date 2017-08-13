@@ -31,7 +31,7 @@ Programs:
 =========
 * hexeditor.pas >> demo hex editor that uses all the libraries.
 * colpick.pas >> True Color(16k) palette picker.
-* wintest.pas >> window test.
+* wintest.pas, wintest2.pas, testscroll.pas >> Different test programs.
 * asc.pas >> Text mode ASCII table with windows and multiple choice using unit video.
 * rdf.pas >> A very rudimentary prototype of a text editor in text mode. 
 * openfile.pas >> Selecting a file in a menu-style dialog. 
