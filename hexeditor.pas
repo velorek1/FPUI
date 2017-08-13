@@ -145,7 +145,7 @@ begin
      posy:=70;
      i:=0;
      repeat
-         rem:=dec2hex(current,false);
+         rem:=dec2hex(current,true);
          esc(posx,posy,'Offset: ',dgreyc);
          esc(posx+10*8,posy,rem,dbluec);
          posy:=posy+30;
@@ -187,7 +187,7 @@ Begin
     addr;
     while not eof(f) do Begin
       Read(f,Cp);
-      Texto[count]:=dec2hex(cp,false);
+      Texto[count]:=dec2hex(cp,true);
       count:=count+1;
       if count = 360 then break;
     end;
