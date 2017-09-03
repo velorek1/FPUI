@@ -1,11 +1,15 @@
 # fp-myunits
 
 Amateur Freepascal Units and Programs.
-My units use PtcGraph, PtcCrt, PtcMouse included in FreePascal 2.6 or higher for Graphics
-and RTL (video and keyboard) for Text Mode.
 
-I've created this only for fun. It is a GUI with menus, windows, scroll list with mouse and keyboard interface.
+It is a GUI with menus, windows, scroll list with mouse and keyboard interface.
 I have also developed them in text mode using the unit video.
+
+My units use PtcGraph, PtcCrt, PtcMouse included in FreePascal 2.6 or higher for Graphics
+and RTL (video and keyboard) for Text Mode. 
+
+I've created this only for fun and to learn programming. That's why they are full of mistakes and redundancies.
+I hope this will help me become a better programmer one day. 
 
 NOTE: FOR X11 headers in linux install: 
 sudo apt-get install xorg-dev
