@@ -1,4 +1,4 @@
-Uses vidutil,video,aedcho2,sysutils,winvideo;
+Uses vidutil,video,aedcho2,sysutils,keyboard,winvideo;
 {globals}
 var win1,win2,win3,win4: tmWin;
 
@@ -75,5 +75,6 @@ begin
       wink;
       asciitable;
       Donevideo;
+      DoneKeyboard;
       credits;
 end.
