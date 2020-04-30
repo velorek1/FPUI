@@ -1,6 +1,6 @@
-# fp-myunits
+# FP-UI
 
-Amateur Freepascal Units and Programs.
+Freepascal USER INTERFACE DEMOS.
 
 It is a GUI with menus, windows, scroll list with mouse and keyboard interface.
 I have also developed them in text mode using the unit video.
