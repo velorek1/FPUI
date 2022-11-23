@@ -1,4 +1,5 @@
-Uses gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils,opendunit;
+Uses   {$ifdef unix}cthreads{$endif},
+ gaedch2,gfxn,ptcgraph,ptccrt,ptcmouse,hex2bin,gfwin,sysutils,opendunit;
 const
 {messages}
         aboutmsg = 'Hex Editor v0.1' + chr(10) + '2015. = Coded by Velorek =';
@@ -51,7 +52,7 @@ end;
 procedure display;
 {design layout}
 begin
-    init2(a,$116,fullsc); {1024x768x32m}
+    init2(D16bit,m1024x768,fullsc); {1024x768x32m}
     fondo($2b98);
     cleardevice;
     showmouse;
